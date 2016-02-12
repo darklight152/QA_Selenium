@@ -1,0 +1,458 @@
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+public class PopUps {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		FirefoxProfile profile = new FirefoxProfile();
+		WebDriver driver = new FirefoxDriver(new FirefoxBinary(new File("E:/firefox/firefox.exe")), profile);
+		driver.get("http://www.mate1.com/nw/index");
+		
+		String titleText = "";
+		String genderValue = "";
+		String minAgeValue = "";
+		String maxAgeValue = "";
+		String birthMonth, birthDay, birthYear = "";
+		String country = "";
+		String postalCode = "";
+		String ethnicity = "";
+		String height = "";
+		String bodyType = "";
+		String hairColor = "";
+		String eyeColor = "";
+		String relationship ="";
+		String children ="";
+		String wantChildren = "";
+		String religion = "";
+		String educationField = "";
+		String occupation = "";
+		String education = "";
+		String income = "";
+		String smoking = "";
+		String alcohol = "";
+		String aboutMyself = "";
+		String aboutMyselfTest = "";
+		String lookingFor = "";
+		String lookingForTest = "";
+		
+		// error section
+		
+		int warningCount = 0;
+		int errorCount = 0;
+		String aboutInput, aboutDescription = "";
+		ArrayList<Integer>errorArray = new ArrayList<Integer>();
+
+		String errorEmail = ("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+");
+		String urlValidate = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+		String urlValidate2 = "www[.][-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+		
+		
+		// Updated fields
+		
+		String newTitleText = "";
+		
+
+		// Switching to the Iframe otherwise Error //
+		
+		WebElement frame = driver.findElement(By.xpath("//iframe[contains(@src,'http://www.mate1.com/ajax/login?iframe')]"));
+		driver.switchTo().frame(frame);
+		driver.findElement(By.id("email")).sendKeys("mathuyoung@gmail.com");
+		driver.findElement(By.id("password")).sendKeys("celinie1");
+		driver.findElement(By.className("login-button")).click();
+		Thread.sleep(15000);
+
+		
+		Actions builder = new Actions(driver);
+		builder.moveToElement(driver.findElement(By.id("profile_dd_li"))).perform();
+		Thread.sleep(15000);
+		driver.findElement(By.partialLinkText("Edit")).click();
+		
+		Thread.sleep(15000);
+		
+		// TITLE //
+		
+		WebElement titleElement = driver.findElement(By.id("title"));
+		titleText = titleElement.getAttribute("value");
+		
+		System.out.println("The original title was : " + titleText);
+		
+		driver.findElement(By.id("title")).clear();
+		//driver.findElement(By.id("title")).sendKeys("test");
+		driver.findElement(By.id("title")).sendKeys("hello world");
+		
+		// GENDER
+		
+		Select genderDropDown = new Select(driver.findElement(By.id("profileLooking_gender")));
+		
+		genderValue = genderDropDown.getFirstSelectedOption().getText();
+		System.out.println("The original gender search is : " + genderValue);
+			
+		genderDropDown.selectByIndex(1);
+		
+		// AGE MIN - MAX
+		
+		Select ageMinDropDown = new Select(driver.findElement(By.id("profileLooking_minAge")));
+		
+		minAgeValue = ageMinDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original min age is : " + minAgeValue);
+		
+		//ageMinDropDown.selectByIndex(5);
+		ageMinDropDown.selectByVisibleText("18");
+		
+		Select ageMaxDropDown = new Select(driver.findElement(By.id("profileLooking_maxAge")));
+		
+		maxAgeValue = ageMaxDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original min age is : " + maxAgeValue);
+		
+		ageMaxDropDown.selectByVisibleText("35");
+		//ageMaxDropDown.selectByIndex(5);
+		
+		// DATE OF BIRTH
+		
+		Select birthMonthDropDown = new Select(driver.findElement(By.id("month")));
+		
+		birthMonth = birthMonthDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original birth month is : " + birthMonth);
+		
+		birthMonthDropDown.selectByIndex(6);
+
+		Select birthDateDropDown = new Select(driver.findElement(By.id("daysOfMonth")));
+		
+		birthDay = birthDateDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original birth date is : " + birthDay);
+		
+		birthDateDropDown.selectByIndex(6);
+
+		Select birthYearDropDown = new Select(driver.findElement(By.id("year")));
+		
+		birthYear = birthYearDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original birth year is : " + birthYear);
+		
+		birthYearDropDown.selectByIndex(6);
+
+		// Country
+		
+		// NOTE COUNTRY WILL NOT UPDATE IF INVALID POSTAL CODE!  
+		
+		Select countryDropDown = new Select(driver.findElement(By.id("country")));
+		
+		country = countryDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original country select is : " + country);
+				
+		countryDropDown.selectByVisibleText("United States");
+		
+		// Postal Code
+		
+		// Check if update postal code for wrong country?
+		
+		WebElement postalCodeElement = driver.findElement(By.id("input_postalCode"));
+		postalCode = postalCodeElement.getAttribute("value");
+		
+		System.out.println("The original postal code was : " + postalCode);
+		
+		driver.findElement(By.id("input_postalCode")).clear();
+		driver.findElement(By.id("input_postalCode")).sendKeys("10019");
+		
+		// Ethnicity
+		
+		Select ethnicityDropDown = new Select(driver.findElement(By.id("ethnicity")));
+		
+		ethnicity = ethnicityDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original ethnicity select is : " + ethnicity);
+				
+		ethnicityDropDown.selectByVisibleText("Caucasian / White");
+		//ethnicityDropDown.selectByVisibleText("Asian");
+		
+		// Height
+		
+		Select heightDropDown = new Select(driver.findElement(By.id("height")));
+		
+		height = heightDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original height is : " + height);
+		
+		heightDropDown.selectByVisibleText("6ft. 0in.");
+		//heightDropDown.selectByVisibleText("5ft. 6in.");
+		
+		// Body Type
+		
+		Select bodyTypeDropDown = new Select(driver.findElement(By.id("bodyType")));
+		
+		bodyType = bodyTypeDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original Body Type : " + bodyType);
+		
+		bodyTypeDropDown.selectByVisibleText("Average");
+		//bodyTypeDropDown.selectByVisibleText("Slim");
+		
+		// Hair Color
+		
+		Select hairColorDropDown = new Select(driver.findElement(By.id("hairColor")));
+		
+		hairColor = hairColorDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original hair color is : " + hairColor);
+		
+		hairColorDropDown.selectByVisibleText("Dark Brown");
+		//hairColorDropDown.selectByVisibleText("Black");
+		
+		// Eye Color
+		
+		Select eyeColorDropDown = new Select(driver.findElement(By.id("eyeColor")));
+		
+		eyeColor = eyeColorDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original eye color is : " + eyeColor);
+		
+		eyeColorDropDown.selectByVisibleText("Blue");
+	//	eyeColorDropDown.selectByVisibleText("Brown");
+		
+		// Relationship
+		
+		Select relationshipDropDown = new Select(driver.findElement(By.id("relationship")));
+		
+		relationship = relationshipDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original relationship is : " + relationship);
+		
+		relationshipDropDown.selectByVisibleText("Widowed");
+		// relationshipDropDown.selectByVisibleText("single");
+		
+		// Children
+		
+		Select childrenDropDown = new Select(driver.findElement(By.id("children")));
+		
+		children = childrenDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original children is : " + children);
+		
+		childrenDropDown.selectByVisibleText("Grown up");
+		//relationshipDropDown.selectByVisibleText("None");
+		
+		// Want Children
+		
+		Select wantChildrenDropDown = new Select(driver.findElement(By.id("wantChildren")));
+		
+		wantChildren = wantChildrenDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original want children was : " + wantChildren);
+		
+		wantChildrenDropDown.selectByVisibleText("No");
+	//	wantChildrenDropDown.selectByVisibleText("Rather Not Say");
+		
+		// Religion
+		
+		Select religionDropDown = new Select(driver.findElement(By.id("religion")));
+		
+		religion = religionDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original religion was : " + religion);
+		
+		religionDropDown.selectByVisibleText("Hindu");
+		//	religionDropDown.selectByVisibleText("Agnostic");
+		
+		
+		// Education Field
+		
+		Select educationFieldDropDown = new Select(driver.findElement(By.id("educationField")));
+		
+		educationField = educationFieldDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original education field was : " +educationField);
+		
+		educationFieldDropDown.selectByVisibleText("Archeology");
+		//educationDropDown.selectByVisibleText("Accounting");
+		
+		// Occupation
+		
+		Select occupationDropDown = new Select(driver.findElement(By.id("occupation")));
+		
+		occupation = occupationDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original occupation was : " + occupation);
+		
+		occupationDropDown.selectByVisibleText("Accounting");
+		//occupationDropDown.selectByVisibleText("Activist");
+		
+		// Education
+		
+		Select educationDropDown = new Select(driver.findElement(By.id("education")));
+		
+		education = educationDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original education was : " + education);
+		
+		educationDropDown.selectByVisibleText("PhD");
+		//educationDropDown.selectByVisibleText("Graduate");
+		
+		// Income
+		
+		Select incomeDropDown = new Select(driver.findElement(By.id("income")));
+		
+		income = incomeDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original income was : " + income);
+		
+		incomeDropDown.selectByIndex(0);
+		//incomeDropDown.selectByIndex(1);
+		
+		// Smoking
+		
+		Select smokingDropDown = new Select(driver.findElement(By.id("smoking")));
+		
+		smoking = smokingDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original smoking was : " + smoking);
+		
+		smokingDropDown.selectByVisibleText("Often");
+		//smokingDropDown.selectByVisibleText("Never");
+		
+		// Alcohol
+		
+		Select alcoholDropDown = new Select(driver.findElement(By.id("alcohol")));
+		
+		alcohol = alcoholDropDown.getFirstSelectedOption().getText();
+		
+		System.out.println("The original alcohol was : " + alcohol);
+		
+		alcoholDropDown.selectByVisibleText("Often");
+		//alcoholDropDown.selectByVisibleText("Never");
+		
+		// ABOUT MYSELF ESSAY
+		
+		aboutMyselfTest = "This is a test to see if URLs will be stripped.  After this a url should not appear.  www.google.ca"
+				+ "  .  There should also be a check for http://www.cbc.ca.  After this an email should not appear.  matt123abc@gmail.com"	;
+		
+		aboutMyself = driver.findElement(By.id("aboutMyself")).getAttribute("value");
+		
+		System.out.println("The original about myself : " + aboutMyself);
+		
+		driver.findElement(By.id("aboutMyself")).clear();
+		
+		//driver.findElement(By.id("aboutMyself")).sendKeys("This was a triumph.  www.google.ca  I'm making a note here, huge success!");
+		driver.findElement(By.id("aboutMyself")).sendKeys(aboutMyselfTest);
+		
+		// LOOKING FOR ESSAY
+		
+		lookingForTest = "This is a test to see if URLs will be stripped.  After this a url should not appear.  www.google.ca"
+				+ "  .  There should also be a check for http://www.cbc.ca.  After this an email should not appear.  matt123abc@gmail.com"	;
+		
+		lookingFor = driver.findElement(By.id("lookingFor")).getAttribute("value");
+		
+		System.out.println("The original Looking For : " + lookingFor);
+		
+		driver.findElement(By.id("lookingFor")).clear();
+		
+		//driver.findElement(By.id("aboutMyself")).sendKeys("This was a triumph.  www.google.ca  I'm making a note here, huge success!");
+		driver.findElement(By.id("lookingFor")).sendKeys(lookingForTest);
+		
+		// Check for URL and Email Erorrs
+		
+		//  Patterns
+		
+		Pattern p = Pattern.compile(errorEmail);
+		Pattern p2 = Pattern.compile(urlValidate);
+		Pattern p3 = Pattern.compile(urlValidate2);
+
+		
+		// Matchers
+		
+		Matcher m = p.matcher(aboutMyselfTest);
+		Matcher m2 = p2.matcher(aboutMyselfTest);
+		Matcher m3 = p3.matcher(aboutMyselfTest);
+		Matcher m4 = p.matcher(lookingForTest);
+		Matcher m5 = p2.matcher(lookingForTest);
+		Matcher m6 = p3.matcher(lookingForTest);
+		
+		List<String> error = new ArrayList<String>();
+		while (m.find()){
+			
+			System.out.println("Found a Email error in the 'About Myself' : " + m.group());
+			error.add(m.group());
+			errorCount = errorCount + 1;
+			
+		}
+		
+		List<String> urlError = new ArrayList<String>();
+		while (m2.find()){
+			
+			System.out.println("Found a URL error in the 'About Myself' section: " + m2.group());
+			urlError.add(m2.group());
+			errorCount = errorCount + 1;
+			
+		}
+		
+		List<String> urlError2 = new ArrayList<String>();
+		while (m3.find()){
+			
+			System.out.println("Found a URL2 error in the 'About Myself' section : " + m3.group());
+			urlError2.add(m3.group());
+			errorCount = errorCount +1;
+			
+		}
+		
+		List<String> descriptionError = new ArrayList<String>();
+		while (m4.find()){
+			
+			System.out.println("Found a Email error in the 'What I'm Looking For' section : " + m4.group());
+			descriptionError.add(m4.group());
+			errorCount = errorCount +1;
+		}
+		
+		List<String> url3Error = new ArrayList<String>();
+		while (m5.find()){
+			
+			System.out.println("Found a URL error in the 'What I'm Looking For' section : " + m5.group());
+			url3Error.add(m5.group());
+			errorCount = errorCount +1;
+			
+		}
+		
+		List<String> urlError4 = new ArrayList<String>();
+		while (m6.find()){
+			
+			System.out.println("Found a URL2 error in the 'What I'm Looking For' section : " + m6.group());
+			urlError4.add(m6.group());
+			errorCount = errorCount +1;
+			
+		}
+		
+		System.out.println("Error count is : " +errorCount);
+		
+		
+		// SAVE BASIC PROFILE
+		
+		 driver.findElement(By.id("submit_basic_information")).click();
+		
+		 Thread.sleep(5000);
+		 
+		 driver.findElement(By.id("submit_about_myself")).click();
+		 
+		 Thread.sleep(5000);
+		 
+		 driver.findElement(By.id("submit_who_im_looking_for")).click();
+		 
+		
+	}
+
+}
