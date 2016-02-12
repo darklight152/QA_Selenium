@@ -70,7 +70,7 @@ public class PopUps {
 		WebElement frame = driver.findElement(By.xpath("//iframe[contains(@src,'http://www.mate1.com/ajax/login?iframe')]"));
 		driver.switchTo().frame(frame);
 		driver.findElement(By.id("email")).sendKeys("mathuyoung@gmail.com");
-		driver.findElement(By.id("password")).sendKeys("celinie1");
+		driver.findElement(By.id("password")).sendKeys("pow4645mtl");
 		driver.findElement(By.className("login-button")).click();
 		Thread.sleep(15000);
 
